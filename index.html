@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .added {
+            color: #0a0;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <p>Por favor seleccione un producto</p>
+        <div>
+            <select id="product" required>
+                <option hidden value="0">Por favor seleccione</option>
+                <option value="500">Mezcla original 200 g 500 yenes</option>
+                <option value="900">Mezcla original 500 g 900 yenes</option>
+                <option value="700">Mezcla especial 200 g 700 yenes</option>
+                <option value="1200">Mezcla especial 500 g 1200 yenes</option>
+            </select>
+            <span id="message" class="added"></span>
+            <p>Por favor seleccione cantidad</p>
+            <input type="number" min="1" max="5" id="number" value="1" required>
+        </div>
+        <br>
+        <input type="button" class="btn" value="Sumar" onclick="add()">
+        <input type="button" class="btn" value="Cantidad total" onclick="calc()">
+    </form>
+    <script>
+
+        const choosed = [];
+        const select = document.getElementById('product');
+        const number = document.getElementById('number');
+        const message = document.querySelector('message');
+        let string = '';
+
+        function add() {
+            const selectedIndex = select.selectedIndex;
+            if (selectedIndex != 0) {
+                const product = select.options[selectedIndex];
+                let quantity = number.value;
+                if(quantity != undefined){
+                    choosed.push({ name: product.textContent, id: selectedIndex, price: parseInt(product.value) * quantity }); 
+    
+                    select.selectedIndex = 0;
+                    number.value = 1;
+
+
+
+                }
+                else {
+                    alert('Selecciona una cantidad');
+                }
+
+            }
+
+        }
+
+        function calc() {
+
+            if (choosed.length > 0) {
+                string = '';
+
+                string += choosed.map((e) => e.name + '\n');
+                string += 'Total: ' + choosed.reduce(function (previous, current) { return previous + current.price }, 0);
+                alert(string);
+            } else {
+                alert('Selecciona algunos productos');
+            }
+        }
+
+    </script>
+</body>
+
+</html>
